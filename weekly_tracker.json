@@ -1,0 +1,262 @@
+{
+  "version": "1.0",
+  "exportDate": "2026-05-20T13:13:13.696Z",
+  "selectedDays": [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun"
+  ],
+  "nextWeekId": 119,
+  "weeks": [
+    {
+      "weekId": 101,
+      "weeklyMg": 1,
+      "weights": {
+        "Mon": null,
+        "Tue": null,
+        "Wed": null,
+        "Thu": 77,
+        "Fri": null,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 102,
+      "weeklyMg": 1,
+      "weights": {
+        "Mon": null,
+        "Tue": null,
+        "Wed": null,
+        "Thu": 75.85,
+        "Fri": 75.7,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 103,
+      "weeklyMg": 2,
+      "weights": {
+        "Mon": null,
+        "Tue": 76.45,
+        "Wed": 75.8,
+        "Thu": 75.5,
+        "Fri": 75.25,
+        "Sat": 74.95,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 104,
+      "weeklyMg": 2,
+      "weights": {
+        "Mon": 74.9,
+        "Tue": 74.8,
+        "Wed": 74.7,
+        "Thu": 74.6,
+        "Fri": 74.8,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 105,
+      "weeklyMg": 2,
+      "weights": {
+        "Mon": null,
+        "Tue": null,
+        "Wed": 74.65,
+        "Thu": 74.65,
+        "Fri": 74.15,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 106,
+      "weeklyMg": 4,
+      "weights": {
+        "Mon": null,
+        "Tue": null,
+        "Wed": null,
+        "Thu": null,
+        "Fri": null,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 107,
+      "weeklyMg": 8,
+      "weights": {
+        "Mon": 73.55,
+        "Tue": 72.95,
+        "Wed": 73.15,
+        "Thu": 72.75,
+        "Fri": 72.6,
+        "Sat": 72.05,
+        "Sun": 71.6
+      }
+    },
+    {
+      "weekId": 108,
+      "weeklyMg": 4,
+      "weights": {
+        "Mon": 71.45,
+        "Tue": 70.9,
+        "Wed": 70.55,
+        "Thu": 70.85,
+        "Fri": 70.5,
+        "Sat": 70.4,
+        "Sun": 70.15
+      }
+    },
+    {
+      "weekId": 109,
+      "weeklyMg": 4,
+      "weights": {
+        "Mon": 70.2,
+        "Tue": 70,
+        "Wed": 69.75,
+        "Thu": 69.45,
+        "Fri": 69.3,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 110,
+      "weeklyMg": 4,
+      "weights": {
+        "Mon": null,
+        "Tue": 69.3,
+        "Wed": 69.2,
+        "Thu": 69.25,
+        "Fri": 68.85,
+        "Sat": 68.7,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 111,
+      "weeklyMg": 4,
+      "weights": {
+        "Mon": null,
+        "Tue": 68.4,
+        "Wed": 68.85,
+        "Thu": 68.85,
+        "Fri": 68.45,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 112,
+      "weeklyMg": 3.5,
+      "weights": {
+        "Mon": null,
+        "Tue": 67.6,
+        "Wed": 67.5,
+        "Thu": 67.55,
+        "Fri": 67.7,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 113,
+      "weeklyMg": 0,
+      "weights": {
+        "Mon": null,
+        "Tue": 67.9,
+        "Wed": 68.15,
+        "Thu": 67.25,
+        "Fri": 66.95,
+        "Sat": 67,
+        "Sun": 66.7
+      }
+    },
+    {
+      "weekId": 114,
+      "weeklyMg": 4,
+      "weights": {
+        "Mon": null,
+        "Tue": 67.05,
+        "Wed": 66.85,
+        "Thu": 66.35,
+        "Fri": 66,
+        "Sat": 66.65,
+        "Sun": 65.9
+      }
+    },
+    {
+      "weekId": 115,
+      "weeklyMg": 3,
+      "weights": {
+        "Mon": 65.85,
+        "Tue": 65.65,
+        "Wed": 65.3,
+        "Thu": null,
+        "Fri": null,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 116,
+      "weeklyMg": 3,
+      "weights": {
+        "Mon": null,
+        "Tue": null,
+        "Wed": null,
+        "Thu": null,
+        "Fri": null,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 117,
+      "weeklyMg": 2,
+      "weights": {
+        "Mon": null,
+        "Tue": null,
+        "Wed": null,
+        "Thu": null,
+        "Fri": null,
+        "Sat": null,
+        "Sun": null
+      }
+    },
+    {
+      "weekId": 118,
+      "weeklyMg": 0,
+      "weights": {
+        "Mon": null,
+        "Tue": null,
+        "Wed": null,
+        "Thu": null,
+        "Fri": null,
+        "Sat": null,
+        "Sun": null
+      }
+    }
+  ],
+  "metadata": {
+    "totalWeeks": 18,
+    "trackedDays": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ]
+  }
+}
