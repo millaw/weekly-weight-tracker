@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Weekly Tracker · Card Layout · No Swipe</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #eef2f7;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            padding: 12px;
+            min-height: 100vh;
+        }
+
+        /* Main container */
+        .tracker-card {
+            max-width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 16px;
+        }
+
+        /* Header */
+        .header-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eef2f7;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            /*background: linear-gradient(135deg, #1e3c5c, #2b5a7a);*/
+            background-clip: text;
+            -webkit-background-clip: text;
+            /*color: transparent;*/
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .badge {
+            background: #eef2ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #1e4a76;
+        }
+
+        .subhead {
+            color: #4b5e77;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-top: 4px;
+        }
+
+        /* Controls - stacked vertically on mobile */
+        .control-bar {
+            background: #f8fafd;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .mg-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .mg-field label {
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #2c3f66;
+        }
+
+        .mg-input {
+            border: 1px solid #cbd5e1;
+            border-radius: 40px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            width: 100%;
+            background: white;
+        }
+
+        /* Weekday chips - wrap naturally */
+        .weekday-toggle {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .weekday-toggle span {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1f3a5f;
+        }
+
+        .day-chip {
+            background: #f1f5f9;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .day-chip.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .day-chip:active {
+            transform: scale(0.96);
+        }
+
+        /* Action buttons - grid layout */
+        .action-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+        }
+
+        .btn {
+            border: none;
+            font-weight: 600;
+            padding: 12px 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            background: white;
+            border: 1px solid #cbd5e1;
+            transition: all 0.2s;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: #1e4a76;
+            border-color: #1e4a76;
+            color: white;
+        }
+
+        .btn-success {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            border-color: #f59e0b;
+            color: white;
+        }
+
+        .btn-info {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+
+        /* CARD LAYOUT - No horizontal scroll! */
+        .weeks-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        /* Individual week card */
+        .week-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .week-card-header {
+            background: #f8fafc;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .week-number {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #1e4a76;
+            background: #e0e7ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .week-mg {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fef7e0;
+            padding: 6px 12px;
+            border-radius: 30px;
+        }
+
+        .week-mg label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #854d0e;
+        }
+
+        .week-mg input {
+            width: 90px;
+            padding: 6px 10px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: white;
+        }
+
+        .delete-card-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #cbd5e1;
+            padding: 6px 10px;
+            border-radius: 30px;
+            transition: 0.1s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .delete-card-btn:active {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        /* Weight entries grid */
+        .weights-grid {
+            padding: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .weight-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafcff;
+            padding: 8px 12px;
+            border-radius: 16px;
+            border: 1px solid #eef2f8;
+        }
+
+        .weight-day {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #334155;
+        }
+
+        .weight-input {
+            width: 80px;
+            padding: 8px 8px;
+            border-radius: 24px;
+            border: 1px solid #cbd5e6;
+            text-align: center;
+            font-size: 0.85rem;
+            background: white;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #94a3b8;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        /* Info message */
+        .info-message {
+            background: #fef9e6;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-size: 0.75rem;
+            color: #8b6b42;
+            line-height: 1.5;
+        }
+
+        .file-status {
+            background: #d1fae5;
+            border-radius: 16px;
+            padding: 10px 16px;
+            font-size: 0.75rem;
+            color: #2d6a4f;
+            margin-top: 12px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #6c86a3;
+        }
+
+        /* Tablet and desktop improvements */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .tracker-card {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 24px;
+            }
+            
+            .control-bar {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: flex-end;
+            }
+            
+            .mg-field {
+                flex: 1;
+            }
+            
+            .weekday-toggle {
+                flex: 2;
+            }
+            
+            .action-group {
+                flex: 1;
+                display: flex;
+            }
+            
+            .weights-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+
+        /* Dark mode */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #1a1a1a;
+            }
+            .tracker-card {
+                background: #2d2d2d;
+            }
+            .control-bar {
+                background: #252525;
+            }
+            .week-card {
+                background: #2d2d2d;
+                border-color: #404040;
+            }
+            .week-card-header {
+                background: #252525;
+            }
+            .weight-item {
+                background: #252525;
+            }
+            .info-message {
+                background: #3d3d2d;
+                color: #e6d5a8;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="tracker-card">
+    <div class="header-section">
+        <h1>
+            📆 Weekly Tracker
+            <span class="badge">📱 Card Layout</span>
+        </h1>
+        <div class="subhead">
+            Each card = one full week. No swiping needed!
+        </div>
+    </div>
+
+    <div class="control-bar">
+        <div class="mg-field">
+            <label>💊 Default weekly dose (mg)</label>
+            <input type="number" id="defaultMgInput" class="mg-input" value="0" step="1">
+        </div>
+        <div class="weekday-toggle" id="weekdayTogglePanel">
+            <span>📌 Track:</span>
+        </div>
+        <div class="action-group">
+            <button id="addWeekBtn" class="btn btn-primary">➕ Add week</button>
+            <button id="saveJsonBtn" class="btn btn-success">💾 Save</button>
+            <button id="loadJsonBtn" class="btn btn-warning">📂 Load</button>
+            <button id="autoLoadBtn" class="btn btn-info">🔄 Reload</button>
+            <button id="clearAllBtn" class="btn btn-danger">🗑️ Clear</button>
+        </div>
+    </div>
+
+    <!-- Weeks will be rendered as cards here -->
+    <div id="weeksContainer" class="weeks-container"></div>
+
+    <div class="info-message">
+        📱 <strong>Mobile-Friendly Card Layout:</strong><br>
+        • Each week is a separate card - scroll down to see all weeks<br>
+        • Edit mg and weights directly in each card<br>
+        • Select which days to track - only those days appear<br>
+        • No horizontal swiping needed!
+    </div>
+    <footer>💾 Data saved as JSON | Cards adapt to your screen size</footer>
+</div>
+
+<script>
+    // DATA MODEL
+    let weeksStore = [];
+    let selectedDays = ["Mon", "Wed", "Fri"];
+    const FULL_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    let nextWeekId = 101;
+    
+    let lastLoadedFileName = null;
+    let lastLoadedFileData = null;
+
+    // DOM elements
+    const weeksContainer = document.getElementById("weeksContainer");
+    const addBtn = document.getElementById("addWeekBtn");
+    const saveBtn = document.getElementById("saveJsonBtn");
+    const loadBtn = document.getElementById("loadJsonBtn");
+    const autoLoadBtn = document.getElementById("autoLoadBtn");
+    const clearBtn = document.getElementById("clearAllBtn");
+    const defaultMgField = document.getElementById("defaultMgInput");
+    const weekdayPanel = document.getElementById("weekdayTogglePanel");
+
+    function sortSelectedDays() {
+        selectedDays.sort((a, b) => FULL_WEEK.indexOf(a) - FULL_WEEK.indexOf(b));
+    }
+
+    function renderDayChips() {
+        weekdayPanel.innerHTML = '<span>📌 Track:</span>';
+        FULL_WEEK.forEach(day => {
+            const chip = document.createElement('button');
+            chip.textContent = day.substring(0, 3);
+            chip.classList.add('day-chip');
+            if (selectedDays.includes(day)) chip.classList.add('active');
+            chip.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (selectedDays.includes(day)) {
+                    selectedDays = selectedDays.filter(d => d !== day);
+                } else {
+                    selectedDays.push(day);
+                    sortSelectedDays();
+                }
+                renderAllCards();
+                renderDayChips();
+            });
+            weekdayPanel.appendChild(chip);
+        });
+
+        const selectAllBtn = document.createElement('button');
+        selectAllBtn.textContent = '✨ All 7';
+        selectAllBtn.classList.add('day-chip');
+        selectAllBtn.addEventListener('click', () => {
+            selectedDays = [...FULL_WEEK];
+            sortSelectedDays();
+            renderAllCards();
+            renderDayChips();
+        });
+        weekdayPanel.appendChild(selectAllBtn);
+
+        const clearDaysBtn = document.createElement('button');
+        clearDaysBtn.textContent = '❌ None';
+        clearDaysBtn.classList.add('day-chip');
+        clearDaysBtn.addEventListener('click', () => {
+            selectedDays = [];
+            renderAllCards();
+            renderDayChips();
+        });
+        weekdayPanel.appendChild(clearDaysBtn);
+    }
+
+    function addNewWeek() {
+        let defaultMg = parseFloat(defaultMgField.value);
+        if (isNaN(defaultMg)) defaultMg = 0;
+        const newWeek = {
+            weekId: nextWeekId++,
+            weeklyMg: defaultMg,
+            weights: {}
+        };
+        FULL_WEEK.forEach(day => { newWeek.weights[day] = null; });
+        weeksStore.push(newWeek);
+        renderAllCards();
+        showStatusMessage(`✅ Added Week ${newWeek.weekId}`, "success");
+    }
+
+    function deleteWeekById(weekId) {
+        weeksStore = weeksStore.filter(w => w.weekId !== weekId);
+        renderAllCards();
+        showStatusMessage(`🗑️ Week ${weekId} deleted`, "info");
+    }
+
+    function updateWeekMg(weekId, newMg) {
+        const week = weeksStore.find(w => w.weekId === weekId);
+        if (week) week.weeklyMg = newMg;
+    }
+
+    function updateWeight(weekId, dayName, value) {
+        const week = weeksStore.find(w => w.weekId === weekId);
+        if (week) {
+            if (value === "" || value === null) {
+                week.weights[dayName] = null;
+            } else {
+                const num = parseFloat(value);
+                if (!isNaN(num)) week.weights[dayName] = num;
+                else week.weights[dayName] = null;
+            }
+        }
+    }
+
+    // Render weeks as cards (NO HORIZONTAL SCROLLING!)
+    function renderAllCards() {
+        weeksContainer.innerHTML = '';
+        
+        if (weeksStore.length === 0) {
+            weeksContainer.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">📋</div>
+                    <div>No weeks yet. Tap "Add week" to start tracking!</div>
+                </div>
+            `;
+            return;
+        }
+        
+        weeksStore.forEach(week => {
+            const card = document.createElement('div');
+            card.className = 'week-card';
+            
+            // Card header
+            const header = document.createElement('div');
+            header.className = 'week-card-header';
+            header.innerHTML = `
+                <span class="week-number">Week ${week.weekId}</span>
+                <div class="week-mg">
+                    <label>💊 mg/week</label>
+                    <input type="number" id="mg-${week.weekId}" value="${week.weeklyMg}" step="5" class="mg-week-input">
+                </div>
+                <button class="delete-card-btn" data-id="${week.weekId}">🗑️</button>
+            `;
+            
+            // Bind mg input change
+            const mgInput = header.querySelector(`#mg-${week.weekId}`);
+            mgInput.addEventListener('change', (e) => {
+                let val = parseFloat(e.target.value);
+                if (isNaN(val)) val = 0;
+                updateWeekMg(week.weekId, val);
+            });
+            
+            // Bind delete button
+            const deleteBtn = header.querySelector('.delete-card-btn');
+            deleteBtn.addEventListener('click', () => deleteWeekById(week.weekId));
+            
+            card.appendChild(header);
+            
+            // Weight entries grid
+            const weightsGrid = document.createElement('div');
+            weightsGrid.className = 'weights-grid';
+            
+            if (selectedDays.length === 0) {
+                weightsGrid.innerHTML = `
+                    <div style="grid-column:1/-1; text-align:center; padding:20px; color:#94a3b8;">
+                        ⚠️ No days selected. Use the buttons above to select tracking days.
+                    </div>
+                `;
+            } else {
+                selectedDays.forEach(day => {
+                    const weightItem = document.createElement('div');
+                    weightItem.className = 'weight-item';
+                    
+                    const currentValue = (week.weights && week.weights[day] !== null && week.weights[day] !== undefined) 
+                        ? week.weights[day] : '';
+                    
+                    weightItem.innerHTML = `
+                        <span class="weight-day">${day}</span>
+                        <input type="number" step="0.1" class="weight-input" 
+                               id="weight-${week.weekId}-${day}" 
+                               value="${currentValue}" 
+                               placeholder="kg">
+                    `;
+                    
+                    const weightInput = weightItem.querySelector(`#weight-${week.weekId}-${day}`);
+                    weightInput.addEventListener('change', (e) => {
+                        let newVal = e.target.value;
+                        if (newVal === "") {
+                            updateWeight(week.weekId, day, null);
+                        } else {
+                            let num = parseFloat(newVal);
+                            if (!isNaN(num)) updateWeight(week.weekId, day, num);
+                            else updateWeight(week.weekId, day, null);
+                        }
+                    });
+                    
+                    weightsGrid.appendChild(weightItem);
+                });
+            }
+            
+            card.appendChild(weightsGrid);
+            weeksContainer.appendChild(card);
+        });
+    }
+
+    // JSON Storage Functions
+    function saveToJsonFile() {
+        const exportData = {
+            version: "1.0",
+            exportDate: new Date().toISOString(),
+            selectedDays: selectedDays,
+            nextWeekId: nextWeekId,
+            weeks: weeksStore
+        };
+        
+        const jsonStr = JSON.stringify(exportData, null, 2);
+        const blob = new Blob([jsonStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+        a.download = `weekly_tracker_${timestamp}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showStatusMessage("✅ Data saved to JSON!", "success");
+    }
+    
+    function loadFromJsonFile(file = null) {
+        const processFile = (selectedFile) => {
+            if (!selectedFile) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const loadedData = JSON.parse(e.target.result);
+                    
+                    if (loadedData.weeks && Array.isArray(loadedData.weeks)) {
+                        weeksStore = loadedData.weeks;
+                        
+                        if (loadedData.selectedDays && Array.isArray(loadedData.selectedDays)) {
+                            selectedDays = loadedData.selectedDays;
+                            sortSelectedDays();
+                        }
+                        
+                        if (loadedData.nextWeekId && typeof loadedData.nextWeekId === 'number') {
+                            nextWeekId = loadedData.nextWeekId;
+                        } else {
+                            const maxId = weeksStore.length > 0 ? Math.max(...weeksStore.map(w => w.weekId)) : 100;
+                            nextWeekId = maxId + 1;
+                        }
+                        
+                        weeksStore.forEach(week => {
+                            if (!week.weights) week.weights = {};
+                            FULL_WEEK.forEach(day => {
+                                if (week.weights[day] === undefined) week.weights[day] = null;
+                            });
+                        });
+                        
+                        lastLoadedFileName = selectedFile.name;
+                        lastLoadedFileData = e.target.result;
+                        
+                        localStorage.setItem('lastLoadedFileName', lastLoadedFileName);
+                        localStorage.setItem('lastLoadedFileData', lastLoadedFileData);
+                        
+                        renderDayChips();
+                        renderAllCards();
+                        showStatusMessage(`✅ Loaded ${weeksStore.length} weeks from "${selectedFile.name}"`, "success");
+                    } else {
+                        throw new Error("Invalid JSON structure");
+                    }
+                } catch (error) {
+                    showStatusMessage(`❌ Error: ${error.message}`, "error");
+                }
+            };
+            reader.readAsText(selectedFile);
+        };
+        
+        if (file) {
+            processFile(file);
+        } else {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = (event) => {
+                if (event.target.files[0]) processFile(event.target.files[0]);
+            };
+            input.click();
+        }
+    }
+    
+    function autoLoadLastFile() {
+        const lastFileName = localStorage.getItem('lastLoadedFileName');
+        const lastFileData = localStorage.getItem('lastLoadedFileData');
+        
+        if (lastFileName && lastFileData) {
+            try {
+                const loadedData = JSON.parse(lastFileData);
+                if (loadedData.weeks && Array.isArray(loadedData.weeks)) {
+                    weeksStore = loadedData.weeks;
+                    if (loadedData.selectedDays) selectedDays = loadedData.selectedDays;
+                    if (loadedData.nextWeekId) nextWeekId = loadedData.nextWeekId;
+                    sortSelectedDays();
+                    
+                    weeksStore.forEach(week => {
+                        if (!week.weights) week.weights = {};
+                        FULL_WEEK.forEach(day => {
+                            if (week.weights[day] === undefined) week.weights[day] = null;
+                        });
+                    });
+                    
+                    lastLoadedFileName = lastFileName;
+                    lastLoadedFileData = lastFileData;
+                    renderDayChips();
+                    renderAllCards();
+                    showStatusMessage(`📱 Loaded "${lastFileName}"`, "success");
+                    return true;
+                }
+            } catch (error) {
+                console.error("Auto-load failed:", error);
+            }
+        }
+        loadDemoData();
+        return false;
+    }
+    
+    function reloadLastFile() {
+        if (lastLoadedFileData && lastLoadedFileName) {
+            try {
+                const loadedData = JSON.parse(lastLoadedFileData);
+                if (loadedData.weeks && Array.isArray(loadedData.weeks)) {
+                    weeksStore = loadedData.weeks;
+                    if (loadedData.selectedDays) selectedDays = loadedData.selectedDays;
+                    if (loadedData.nextWeekId) nextWeekId = loadedData.nextWeekId;
+                    sortSelectedDays();
+                    
+                    weeksStore.forEach(week => {
+                        if (!week.weights) week.weights = {};
+                        FULL_WEEK.forEach(day => {
+                            if (week.weights[day] === undefined) week.weights[day] = null;
+                        });
+                    });
+                    
+                    renderDayChips();
+                    renderAllCards();
+                    showStatusMessage(`✅ Reloaded "${lastLoadedFileName}"`, "success");
+                }
+            } catch (error) {
+                showStatusMessage("❌ Failed to reload", "error");
+            }
+        } else {
+            showStatusMessage("📂 No previous file. Load one first.", "info");
+        }
+    }
+    
+    function clearAllData() {
+        if (confirm("⚠️ Delete ALL data? Save to JSON first if needed.")) {
+            weeksStore = [];
+            nextWeekId = 101;
+            selectedDays = ["Mon", "Wed", "Fri"];
+            sortSelectedDays();
+            renderDayChips();
+            renderAllCards();
+            showStatusMessage("🗑️ All cleared", "info");
+        }
+    }
+    
+    function showStatusMessage(message, type) {
+        let statusDiv = document.querySelector('.file-status');
+        if (!statusDiv) {
+            statusDiv = document.createElement('div');
+            statusDiv.className = 'file-status';
+            document.querySelector('.info-message').after(statusDiv);
+        }
+        statusDiv.textContent = message;
+        statusDiv.style.background = type === 'success' ? '#d1fae5' : type === 'error' ? '#fee2e2' : '#e0f2fe';
+        setTimeout(() => {
+            if (statusDiv) statusDiv.remove();
+        }, 3000);
+    }
+    
+    function loadDemoData() {
+        weeksStore = [];
+        nextWeekId = 101;
+        selectedDays = ["Mon", "Wed", "Fri"];
+        
+        const week1 = {
+            weekId: 101,
+            weeklyMg: 350,
+            weights: { "Mon": 72.4, "Wed": 72.1, "Fri": 71.9, "Tue": null, "Thu": null, "Sat": null, "Sun": null }
+        };
+        const week2 = {
+            weekId: 102,
+            weeklyMg: 370,
+            weights: { "Mon": 71.8, "Wed": 71.5, "Fri": 71.2, "Tue": null, "Thu": null, "Sat": null, "Sun": null }
+        };
+        const week3 = {
+            weekId: 103,
+            weeklyMg: 340,
+            weights: { "Mon": 71.0, "Wed": 70.7, "Fri": 70.5, "Tue": null, "Thu": null, "Sat": null, "Sun": null }
+        };
+        weeksStore.push(week1, week2, week3);
+        defaultMgField.value = 0;
+        sortSelectedDays();
+        renderDayChips();
+        renderAllCards();
+        showStatusMessage("✨ Demo data loaded", "info");
+    }
+    
+    function init() {
+        autoLoadLastFile();
+        addBtn.addEventListener('click', addNewWeek);
+        saveBtn.addEventListener('click', saveToJsonFile);
+        loadBtn.addEventListener('click', () => loadFromJsonFile());
+        autoLoadBtn.addEventListener('click', reloadLastFile);
+        clearBtn.addEventListener('click', clearAllData);
+    }
+    
+    init();
+</script>
+</body>
+</html>
